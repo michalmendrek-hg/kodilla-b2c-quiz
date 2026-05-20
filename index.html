@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kodilla | Quiz kwalifikacyjny BUR</title>
+
+<!-- META PIXEL — zastąp YOUR_PIXEL_ID swoim numerem -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', 'YOUR_PIXEL_ID');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"/></noscript>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --green: #1db954;
+  --green-dark: #17a348;
+  --green-light: #e8f8ee;
+  --navy: #0d1b2a;
+  --text: #1a1a2e;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --bg: #f9fafb;
+  --white: #ffffff;
+  --red: #ef4444;
+  --red-light: #fef2f2;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* NAV */
+nav {
+  padding: 18px 32px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--green);
+  letter-spacing: -0.5px;
+  text-decoration: none;
+}
+
+/* MAIN */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.screen { display: none; width: 100%; max-width: 640px; animation: fadeIn 0.3s ease; }
+.screen.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* WELCOME */
+.welcome-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--green-light);
+  color: var(--green-dark);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 99px;
+  margin-bottom: 24px;
+}
+
+.welcome-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+}
+
+.welcome-title {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(32px, 6vw, 52px);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--navy);
+  margin-bottom: 16px;
+}
+
+.welcome-sub {
+  font-size: 17px;
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 480px;
+  margin: 0 auto 32px;
+}
+
+.welcome-meta {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+
+.welcome-meta span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#welcome-screen { text-align: center; }
+
+/* BTN */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--green);
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 16px 36px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  text-decoration: none;
+}
+
+.btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled { background: #9ca3af; cursor: not-allowed; transform: none; }
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  color: var(--muted);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 10px 0;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.btn-outline:hover { color: var(--text); }
+
+/* ACCORDION */
+.accordion {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  cursor: pointer;
+  gap: 10px;
+}
+
+.accordion-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.acc-icon {
+  width: 28px; height: 28px;
+  background: var(--green-light);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.chevron {
+  width: 16px; height: 16px;
+  color: var(--muted);
+  transition: transform 0.2s;
+}
+
+.accordion.open .chevron { transform: rotate(180deg); }
+
+.accordion-body {
+  display: none;
+  padding: 4px 16px 14px 54px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  border-top: 1px solid var(--border);
+}
+
+.accordion.open .accordion-body { display: block; }
+
+/* PROGRESS */
+.progress-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.progress-bar {
+  height: 3px;
+  background: var(--border);
+  border-radius: 99px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--green);
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+/* QUESTION */
+.question-icon {
+  width: 52px; height: 52px;
+  background: var(--green-light);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  margin-bottom: 14px;
+}
+
+.question-title {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(20px, 4vw, 28px);
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.question-hint {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+/* OPTIONS */
+.options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  text-align: left;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+}
+
+.option:hover { border-color: var(--green); background: var(--green-light); }
+.option.selected { border-color: var(--green); background: var(--green-light); }
+
+.opt-letter {
+  width: 30px; height: 30px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.option.selected .opt-letter {
+  background: var(--green);
+  border-color: var(--green);
+  color: white;
+}
+
+.opt-check {
+  width: 18px; height: 18px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.option.selected .opt-check { color: var(--green); }
+.option.disqualify .opt-check { color: var(--red); }
+
+.opt-text { font-size: 15px; color: var(--text); font-weight: 500; flex: 1; }
+
+/* DROPDOWNS */
+.field-group {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+label.field-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+select, input[type="text"], input[type="tel"], input[type="email"] {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  color: var(--text);
+  background: var(--white);
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  margin-bottom: 14px;
+}
+
+select:last-child, input[type="text"]:last-child, input[type="tel"]:last-child, input[type="email"]:last-child {
+  margin-bottom: 0;
+}
+
+input[type="text"], input[type="tel"], input[type="email"] {
+  background-image: none;
+}
+
+select:focus, input:focus {
+  outline: none;
+  border-color: var(--green);
+}
+
+input.input--error {
+  border-color: var(--red);
+  background-color: var(--red-light);
+}
+
+input.input--error:focus {
+  border-color: var(--red);
+  outline: none;
+}
+
+/* RADIO GROUP */
+.radio-group { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.radio-option:hover { border-color: var(--green); background: var(--green-light); }
+.radio-option.selected { border-color: var(--green); background: var(--green-light); }
+
+.radio-option input[type="radio"] { accent-color: var(--green); width: 16px; height: 16px; cursor: pointer; }
+.radio-option span { font-size: 14px; font-weight: 500; color: var(--text); }
+
+.extra-dropdown { margin-top: 12px; display: none; }
+.extra-dropdown.visible { display: block; }
+
+/* LEAD FORM */
+.summary-box {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+.summary-row:last-child { border-bottom: none; }
+.summary-row .label { color: var(--muted); }
+.summary-row .value { font-weight: 600; color: var(--text); text-align: right; }
+
+.form-section { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+
+.form-group { margin-bottom: 16px; }
+.form-group:last-child { margin-bottom: 0; }
+
+.form-hint {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* DISQUALIFY */
+.disq-icon {
+  width: 64px; height: 64px;
+  background: var(--red-light);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  margin: 0 auto 20px;
+}
+
+.disq-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.disq-text {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.6;
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+/* THANK YOU */
+.ty-icon {
+  width: 72px; height: 72px;
+  background: var(--green-light);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px;
+  margin: 0 auto 20px;
+}
+
+.ty-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.ty-text {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.6;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.ty-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--green-light);
+  color: var(--green-dark);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 99px;
+  margin-bottom: 28px;
+}
+
+.pdf-box {
+  background: var(--green-light);
+  border: 1px solid #a7f3c4;
+  border-radius: 12px;
+  padding: 18px 20px;
+  text-align: left;
+}
+
+.pdf-box p { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+
+/* BACK */
+.back-row { margin-top: 20px; }
+
+/* ERROR */
+.error-msg {
+  font-size: 13px;
+  color: var(--red);
+  margin-top: 6px;
+  display: none;
+}
+.error-msg.visible { display: block; }
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 12px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  background: var(--white);
+}
+
+/* ADMIN */
+#admin-screen {
+  max-width: 900px;
+}
+
+.admin-login-box {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.admin-login-icon {
+  width: 52px; height: 52px;
+  background: var(--green-light);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  margin: 0 auto 16px;
+}
+
+.admin-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.admin-sub { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+
+.admin-table-wrap {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.admin-header h2 { font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 700; }
+
+.admin-count {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+th {
+  background: var(--bg);
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+}
+
+td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--bg); }
+
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+
+.badge-green { background: var(--green-light); color: var(--green-dark); }
+.badge-yellow { background: #fef9c3; color: #92400e; }
+.badge-gray { background: var(--border); color: var(--muted); }
+
+.btn-danger {
+  background: var(--red-light);
+  color: var(--red);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-export {
+  background: var(--green);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-logout {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+
+.no-leads {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  nav { padding: 14px 16px; }
+  main { padding: 20px 16px; }
+
+  /* Welcome */
+  .welcome-badge { font-size: 11px; padding: 5px 12px; }
+  .welcome-sub { font-size: 15px; }
+  .welcome-meta { gap: 10px; font-size: 12px; }
+  .btn-primary { width: 100%; justify-content: center; font-size: 15px; padding: 15px 24px; }
+
+  /* Accordion */
+  .accordion-header { padding: 12px 14px; }
+  .accordion-body { padding: 4px 14px 12px 46px; font-size: 13px; }
+  .accordion-header-left { font-size: 13px; }
+
+  /* Progress */
+  .progress-label { font-size: 11px; }
+
+  /* Question */
+  .question-icon { width: 44px; height: 44px; font-size: 18px; margin-bottom: 10px; }
+  .question-hint { font-size: 13px; }
+
+  /* Options */
+  .option { padding: 14px 12px; gap: 10px; }
+  .opt-letter { width: 26px; height: 26px; font-size: 11px; }
+  .opt-text { font-size: 14px; }
+
+  /* Fields */
+  .field-group { padding: 16px; }
+  select, input[type="text"], input[type="tel"], input[type="email"] {
+    font-size: 16px; /* zapobiega auto-zoom na iOS */
+    padding: 11px 12px;
+  }
+
+  /* Radio */
+  .radio-option { padding: 11px 12px; }
+  .radio-option span { font-size: 13px; }
+
+  /* Summary */
+  .summary-box { padding: 14px; }
+  .summary-row { font-size: 13px; flex-wrap: wrap; gap: 2px; }
+  .summary-row .value { text-align: left; }
+  .form-section { padding: 16px; }
+
+  /* Disqualify / Thank you */
+  .disq-title, .ty-title { font-size: 24px; }
+  .disq-text, .ty-text { font-size: 14px; }
+  .ty-icon, .disq-icon { width: 56px; height: 56px; font-size: 24px; }
+  .pdf-box { padding: 14px 16px; }
+
+  /* Admin */
+  .admin-login-box { padding: 28px 20px; }
+  .admin-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .admin-table-wrap { overflow-x: auto; }
+  table { font-size: 11px; }
+  th, td { padding: 8px 10px; white-space: nowrap; }
+  .btn-export, .btn-logout { font-size: 12px; padding: 6px 12px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" onclick="goHome()" style="display:inline-flex;align-items:center;text-decoration:none;"><img src="data:image/png;base64,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" alt="Kodilla" style="height:40px;width:auto;" /></a>
+</nav>
+
+<main>
+
+<!-- WELCOME -->
+<div id="welcome-screen" class="screen active">
+  <div class="welcome-badge">Quiz kwalifikacyjny</div>
+  <h1 class="welcome-title">Czy kwalifikujesz się do dofinansowania szkolenia?</h1>
+  <p class="welcome-sub">Odpowiedz na 6 pytań i sprawdź, czy możesz skorzystać z dofinansowania na szkolenia programistyczne.</p>
+  <div class="welcome-meta">
+    <span>&#128340; 6 PYTAŃ</span>
+    <span>&middot;</span>
+    <span>~1 MINUTA</span>
+    <span>&middot;</span>
+    <span>WYNIK OD RAZU</span>
+  </div>
+  <button class="btn-primary" onclick="startQuiz()">Start &#8594;</button>
+</div>
+
+<!-- Q1: Wiek -->
+<div id="q1-screen" class="screen">
+  <div class="accordion" id="acc-q1-1">
+    <div class="accordion-header" onclick="toggleAcc('acc-q1-1')">
+      <div class="accordion-header-left"><span class="acc-icon">&#128161;</span> Czym jest BUR?</div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </div>
+    <div class="accordion-body">BUR (Baza Uslug Rozwojowych) to ogolnodostepna platforma PARP, przez którą można uzyskac dofinansowanie na szkolenia i uslugi doradcze ze środków Europejskiego Funduszu Społecznego. Dofinansowanie wynosi nawet do 90%.</div>
+  </div>
+  <div class="accordion" id="acc-q1-2">
+    <div class="accordion-header" onclick="toggleAcc('acc-q1-2')">
+      <div class="accordion-header-left"><span class="acc-icon">&#128161;</span> Kto może skorzystać z dofinansowania?</div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </div>
+    <div class="accordion-body">Dofinansowanie jest dla Ciebie, niezależnie od tego czy jesteś studentem, pracujesz na etacie czy zleceniu, czy aktualnie szukasz pracy. Warunki są dwa: ukończone 18 lat i brak działalnośći gospodarczej, zarówno aktywnej, jak i zawieszonej.</div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <div class="progress-label">
+      PYTAŃIE 01 / 06
+      <div class="progress-bar"><div class="progress-fill" style="width:16.6%"></div></div>
+    </div>
+    <div class="question-icon">&#128197;</div>
+    <div class="question-title">Czy masz ukończone 18 lat?</div>
+    <div class="options" id="opts-q1">
+      <button class="option" onclick="selectOption('q1','A','18 lat lub wiecej', false)" data-val="A">
+        <span class="opt-letter">A</span>
+        
+        <span class="opt-text">Tak, mam 18 lat lub więcej</span>
+      </button>
+      <button class="option disqualify" onclick="selectOption('q1','B','Mniej niz 18 lat', true)" data-val="B">
+        <span class="opt-letter">B</span>
+        
+        <span class="opt-text">Nie, mam mniej niż 18 lat</span>
+      </button>
+    </div>
+    <div class="back-row"><button class="btn-outline" onclick="goBack(1)">&#8592; Wstecz</button></div>
+  </div>
+</div>
+
+<!-- Q2: Logowanie -->
+<div id="q2-screen" class="screen">
+  <div class="accordion" id="acc-q2-1">
+    <div class="accordion-header" onclick="toggleAcc('acc-q2-1')">
+      <div class="accordion-header-left"><span class="acc-icon">&#128161;</span> Jak działa logowanie do BUR?</div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </div>
+    <div class="accordion-body">Od stycznia 2026 roku jedynym sposóbem logowania do BUR jest login.gov.pl - rządowy system bezpiecznego logowania. Potrzebny jest Profil Zaufany lub e-dowód - bez tego nie złożysz wniosku samodzielnie.</div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <div class="progress-label">
+      PYTAŃIE 02 / 06
+      <div class="progress-bar"><div class="progress-fill" style="width:33.3%"></div></div>
+    </div>
+    <div class="question-icon">&#128273;</div>
+    <div class="question-title">Czy posiadasz możliwość logowania elektronicznego?</div>
+    <div class="question-hint">Chodzi o logowanie Profilem Zaufanym, aplikacją mObywatel lub przez bankowość elektroniczną (np. PKO, mBank, ING, Pekao).</div>
+    <div class="options" id="opts-q2">
+      <button class="option" onclick="selectOption('q2','A','Tak, posiadam', false)" data-val="A">
+        <span class="opt-letter">A</span>
+        
+        <span class="opt-text">Tak, posiadam (Profil Zaufany / mObywatel / bank)</span>
+      </button>
+      <button class="option disqualify" onclick="selectOption('q2','B','Nie, nie posiadam', true)" data-val="B">
+        <span class="opt-letter">B</span>
+        
+        <span class="opt-text">Nie, nie posiadam</span>
+      </button>
+    </div>
+    <div class="back-row"><button class="btn-outline" onclick="goBack(2)">&#8592; Wstecz</button></div>
+  </div>
+</div>
+
+<!-- Q3: Wojewodztwo -->
+<div id="q3-screen" class="screen">
+  <div class="accordion" id="acc-q3-1">
+    <div class="accordion-header" onclick="toggleAcc('acc-q3-1')">
+      <div class="accordion-header-left"><span class="acc-icon">&#128161;</span> Dlaczego region ma znaczenie?</div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </div>
+    <div class="accordion-body">Niektore programy wymagają zameldowania w danym wojewodztwie, inne akceptują samo zamieszkanie. Jeśli mieszkasz gdzie indziej niz jesteś zameldowany, dobierzemy program, do ktorego możesz sie zakwalifikować.</div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <div class="progress-label">
+      PYTAŃIE 03 / 06
+      <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+    </div>
+    <div class="question-icon">&#128205;</div>
+    <div class="question-title">Z jakiego wojewodztwa i powiatu jesteś?</div>
+    <div class="question-hint">Pomoże nam to dobrać odpowiedni program dofinansowania w Twoim regionie.</div>
+
+    <div class="field-group">
+      <label class="field-label">Województwo zamieszkania</label>
+      <select id="woj-zamieszkania" onchange="updatePowiaty()">
+        <option value="">Wybierz województwo...</option>
+        <option>dolnoslaskie</option><option>kujawsko-pomorskie</option><option>lubelskie</option>
+        <option>lubuskie</option><option>lodzkie</option><option>malopolskie</option>
+        <option>mazowieckie</option><option>opolskie</option><option>podkarpackie</option>
+        <option>podlaskie</option><option>pomorskie</option><option>slaskie</option>
+        <option>swietokrzyskie</option><option>warminsko-mazurskie</option>
+        <option>wielkopolskie</option><option>zachodniopomorskie</option>
+      </select>
+
+      <label class="field-label">Powiat</label>
+      <select id="powiat-zamieszkania">
+        <option value="">Najpierw wybierz województwo...</option>
+      </select>
+
+      <label class="field-label" style="margin-top:16px;">Czy Twój region zameldowania jest taki sam jak zamieszkania?</label>
+      <div class="radio-group">
+        <label class="radio-option" onclick="handleMeldunekChange('same')">
+          <input type="radio" name="meldunek" value="same"> <span>Mój region zameldowania jest taki sam</span>
+        </label>
+        <label class="radio-option" onclick="handleMeldunekChange('diff')">
+          <input type="radio" name="meldunek" value="diff"> <span>Mój region zameldowania jest inny</span>
+        </label>
+      </div>
+      <div class="error-msg" id="err-meldunek">Prosimy wybrać opcję zameldowania.</div>
+
+      <div class="extra-dropdown" id="meldunek-extra">
+        <label class="field-label" style="margin-top:16px;">Województwo zameldowania</label>
+        <select id="woj-zameldowania">
+          <option value="">Wybierz województwo zameldowania...</option>
+          <option>dolnoslaskie</option><option>kujawsko-pomorskie</option><option>lubelskie</option>
+          <option>lubuskie</option><option>lodzkie</option><option>malopolskie</option>
+          <option>mazowieckie</option><option>opolskie</option><option>podkarpackie</option>
+          <option>podlaskie</option><option>pomorskie</option><option>slaskie</option>
+          <option>swietokrzyskie</option><option>warminsko-mazurskie</option>
+          <option>wielkopolskie</option><option>zachodniopomorskie</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="submitQ3()" style="width:100%;justify-content:center;">Dalej &#8594;</button>
+    <div class="back-row"><button class="btn-outline" onclick="goBack(3)">&#8592; Wstecz</button></div>
+  </div>
+</div>
+
+<!-- Q4: Status -->
+<div id="q4-screen" class="screen">
+  <div class="accordion" id="acc-q4-1">
+    <div class="accordion-header" onclick="toggleAcc('acc-q4-1')">
+      <div class="accordion-header-left"><span class="acc-icon">&#128161;</span> Ile możesz dostac zależenie od statusu?</div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </div>
+    <div class="accordion-body">Dofinansowanie może sięgać do 90% ceny uslugi. Wysokosc zależy od Twojego statusu i regionu. Studenci i osóby niepracujace czesto otrzymuja wyższy poziom dofinansowania.</div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <div class="progress-label">
+      PYTAŃIE 04 / 06
+      <div class="progress-bar"><div class="progress-fill" style="width:66.6%"></div></div>
+    </div>
+    <div class="question-icon">&#128100;</div>
+    <div class="question-title">Jaki jest Twój aktualny status?</div>
+    <div class="options" id="opts-q4">
+      <button class="option" onclick="selectOption('q4','A','Student (studia dzienne lub zaoczne)', false)" data-val="A">
+        <span class="opt-letter">A</span>
+        
+        <span class="opt-text">Student (studiuje dziennie lub zaocznie)</span>
+      </button>
+      <button class="option" onclick="selectOption('q4','B','Student pracujący na umowie o pracę lub zlecenie', false)" data-val="B">
+        <span class="opt-letter">B</span>
+        
+        <span class="opt-text">Student pracujący na umowie o pracę lub zlecenie</span>
+      </button>
+      <button class="option" onclick="selectOption('q4','C','Osóba pracująca na umowę o pracę lub zlecenie', false)" data-val="C">
+        <span class="opt-letter">C</span>
+        
+        <span class="opt-text">Osóba pracująca na umowę o pracę lub zlecenie</span>
+      </button>
+      <button class="option" onclick="selectOption('q4','D','Osóba niepracująca i niestudiojąca', false)" data-val="D">
+        <span class="opt-letter">D</span>
+        
+        <span class="opt-text">Osóba nie pracuje i nie studiuje</span>
+      </button>
+    </div>
+    <div class="back-row"><button class="btn-outline" onclick="goBack(4)">&#8592; Wstecz</button></div>
+  </div>
+</div>
+
+<!-- Q5: Działalność gospodarcza -->
+<div id="q5-screen" class="screen">
+  <div class="accordion" id="acc-q5-1">
+    <div class="accordion-header" onclick="toggleAcc('acc-q5-1')">
+      <div class="accordion-header-left"><span class="acc-icon">&#128161;</span> Dlaczego działalność ma znaczenie?</div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </div>
+    <div class="accordion-body">Program dofinansowania, o który się ubiegamy, jest skierowany do osób fizycznych, a nie przedsiębiorców. Jeśli prowadzisz lub niedawno prowadziłemes działalność, kierujemy Cię do dedykowanego programu dla firm.</div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <div class="progress-label">
+      PYTAŃIE 05 / 06
+      <div class="progress-bar"><div class="progress-fill" style="width:83.3%"></div></div>
+    </div>
+    <div class="question-icon">&#128188;</div>
+    <div class="question-title">Czy prowadzisz działalność gospodarcza?</div>
+    <div class="options" id="opts-q5">
+      <button class="option" onclick="selectOption('q5','A','Nie prowadzę i nie prowadziłem/am w ostatnich 12 miesiącach', false)" data-val="A">
+        <span class="opt-letter">A</span>
+        
+        <span class="opt-text">Nie, nie prowadzę i nie prowadziłem/am w ostatnich 12 miesiącach</span>
+      </button>
+      <button class="option disqualify" onclick="disqualifyB2B('Aktywną JDG lub firma')" data-val="B">
+        <span class="opt-letter">B</span>
+        
+        <span class="opt-text">Tak, prowadzę aktywną JDG lub firmę</span>
+      </button>
+      <button class="option disqualify" onclick="disqualifyB2B('Zawieszona działalność')" data-val="C">
+        <span class="opt-letter">C</span>
+        
+        <span class="opt-text">Mam zawieszoną działalność</span>
+      </button>
+    </div>
+    <div class="back-row"><button class="btn-outline" onclick="goBack(5)">&#8592; Wstecz</button></div>
+  </div>
+</div>
+
+<!-- Q6: Wkład własny -->
+<div id="q6-screen" class="screen">
+  <div class="accordion" id="acc-q6-1">
+    <div class="accordion-header" onclick="toggleAcc('acc-q6-1')">
+      <div class="accordion-header-left"><span class="acc-icon">&#128161;</span> Czym jest wkład własny w BUR?</div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </div>
+    <div class="accordion-body">BUR działa na zasadzie refundacji - najpierw Ty opłacasz szkolenie w całości, a operator zwraca Ci przyznaną kwotę po jego zakończeniu. Wieksosc programow pokrywa do 90% kosztow szkolenia - pozostale 10-20% to Twoj wkład własny. Po podpisaniu umowy z operatorem refundacja jest pewna.</div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <div class="progress-label">
+      PYTAŃIE 06 / 06
+      <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+    </div>
+    <div class="question-icon">&#128179;</div>
+    <div class="question-title">Czy jesteś gotowy/a na wkład własny w wysokosci 10-20% wartosci szkolenia?</div>
+    <div class="question-hint">Wieksosc programow dofinansowania pokrywa do 90% kosztow szkolenia. Pozostała czesc (10-20%) pokrywa uczestnik.</div>
+    <div class="options" id="opts-q6">
+      <button class="option" onclick="selectOption('q6','A','Tak, mam na to budżet', false)" data-val="A">
+        <span class="opt-letter">A</span>
+        
+        <span class="opt-text">Tak, mam na to budżet</span>
+      </button>
+      <button class="option" onclick="selectOption('q6','B','Potrzebuję więcej informacji', false)" data-val="B">
+        <span class="opt-letter">B</span>
+        
+        <span class="opt-text">Potrzebuję więcej informacji</span>
+      </button>
+      <button class="option" onclick="selectOption('q6','C','Nie, szukam pełnego dofinansowania', false)" data-val="C">
+        <span class="opt-letter">C</span>
+        
+        <span class="opt-text">Nie, szukam pełnego dofinansowania</span>
+      </button>
+    </div>
+    <div class="back-row"><button class="btn-outline" onclick="goBack(6)">&#8592; Wstecz</button></div>
+  </div>
+</div>
+
+<!-- LEAD FORM -->
+<div id="lead-screen" class="screen">
+  <h1 class="welcome-title" style="text-align:center;margin-bottom:8px;">Kwalifikujesz się do dofinansowania!</h1>
+  <p class="welcome-sub" style="margin-bottom:24px;">Na podstawie Twoich odpowiedzi możemy zaproponować Ci program szkoleniowy z dofinansowaniem. Zostaw nam dane kontaktowe - odezwiemy się z konkretna propozycją.</p>
+
+  <div class="summary-box" id="summary-box"></div>
+
+  <div class="form-section">
+    <div class="form-group">
+      <label class="field-label">Imie *</label>
+      <input type="text" id="lead-name" placeholder="Jan" />
+    </div>
+    <div class="form-group">
+      <div class="form-hint">&#128274; Numer telefonu potrzebujemy, zeby skontaktować się z Toba i dobrać najlepsze dofinansowanie.</div>
+      <label class="field-label">Numer telefonu *</label>
+      <input type="tel" id="lead-phone" placeholder="np. 512 345 678" />
+    </div>
+    <div class="form-group">
+      <label class="field-label">Adres e-mail (opcjonalnie)</label>
+      <input type="email" id="lead-email" placeholder="jan@firma.pl" />
+    </div>
+    <div class="error-msg" id="err-lead" style="margin-bottom:12px;"></div>
+    <button class="btn-primary" onclick="submitLead()" id="lead-btn" style="width:100%;justify-content:center;">Wyślij zgłoszenie &#8594;</button>
+  </div>
+</div>
+
+<!-- THANK YOU -->
+<div id="thankyou-screen" class="screen" style="text-align:center;">
+  <div class="ty-icon">&#10003;</div>
+  <h1 class="ty-title">Dziękujemy za zgłoszenie!</h1>
+  <p class="ty-text">Skontaktujemy się z Tobą <strong>w ciągu 48 godzin roboczych</strong> (od poniedziałku do piątku), aby przedstawić szczegóły programu dofinansowania dopasowanego do Twojej sytuacji.</p>
+  <div class="ty-badge">&#128336; Maks. 48h roboczych</div>
+
+  <div class="pdf-box">
+    <p>Warto przejrzeć przed spotkaniem - zebraliśmy najważniejsze informacje o BUR w jednym PDF-ie.</p>
+    <button class="btn-primary" onclick="downloadPDF()">&#11015; Pobierz pigułkę wiedzy o BUR (PDF)</button>
+  </div>
+</div>
+
+<!-- DISQUALIFY B2C -->
+<div id="disqualify-screen" class="screen" style="text-align:center;">
+  <div class="disq-icon">&#128683;</div>
+  <h1 class="disq-title">Niestety nie możemy Ci pomoc</h1>
+  <p class="disq-text">Na podstawie Twoich odpowiedzi nie kwalifikujesz się do tego programu dofinansowania. Program jest skierowany do osób fizycznych bez aktywnej lub zawieszonej działalnośći gospodarczej.</p>
+  <div style="margin-bottom:16px;">
+    <p style="font-size:14px;color:var(--muted);margin-bottom:16px;">Ale mamy dla Ciebie coś innego! Jeśli prowadzisz firme, sprawdź nasz program dedykowany dla przedsiębiorców.</p>
+    <!-- SLOT NA LINK B2B - podmień href -->
+    <a href="LINK_DO_QUIZ_B2B" class="btn-primary" id="b2b-link">Przejdź do quizu dla firm &#8594;</a>
+  </div>
+  <div style="margin-top:20px;">
+    <button class="btn-outline" onclick="goHome()">&#8592; Wróc do początku</button>
+  </div>
+</div>
+
+<!-- DISQUALIFY B2C minor / no login -->
+<div id="disqualify-generic-screen" class="screen" style="text-align:center;">
+  <div class="disq-icon">&#128683;</div>
+  <h1 class="disq-title">Niestety nie możemy Ci pomoc</h1>
+  <p class="disq-text" id="disqualify-generic-msg">Na podstawie Twoich odpowiedzi nie kwalifikujesz się do tego programu dofinansowania.</p>
+  <button class="btn-outline" onclick="goHome()">&#8592; Wróc do początku</button>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-screen" class="screen">
+  <div id="admin-login-box" class="admin-login-box">
+    <div class="admin-login-icon">&#128274;</div>
+    <div class="admin-title">Panel administracyjny</div>
+    <div class="admin-sub">Zaloguj się, aby kontynuowac</div>
+    <div class="form-group">
+      <label class="field-label">Login</label>
+      <input type="text" id="admin-login-input" placeholder="admin" />
+    </div>
+    <div class="form-group">
+      <label class="field-label">Haslo</label>
+      <input type="password" id="admin-pass-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()" />
+    </div>
+    <div class="error-msg" id="err-admin" style="margin-bottom:12px;"></div>
+    <button class="btn-primary" onclick="adminLogin()" style="width:100%;justify-content:center;">Zaloguj</button>
+  </div>
+
+  <div id="admin-panel" style="display:none;width:100%;">
+    <div class="admin-table-wrap">
+      <div class="admin-header">
+        <div>
+          <h2>Leady z quizu</h2>
+          <div class="admin-count" id="admin-count"></div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn-export" onclick="exportCSV()">&#11015; Eksportuj CSV</button>
+          <button class="btn-logout" onclick="adminLogout()">Wyloguj</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Imie</th>
+              <th>Telefon</th>
+              <th>Email</th>
+              <th>Woj. zamieszkania</th>
+              <th>Woj. zameldowania</th>
+              <th>Powiat</th>
+              <th>Status</th>
+              <th>Wkład własny</th>
+              <th>UTM source</th>
+              <th>UTM campaign</th>
+              <th>Akcja</th>
+            </tr>
+          </thead>
+          <tbody id="admin-tbody"></tbody>
+        </table>
+        <div id="no-leads" class="no-leads" style="display:none;">Brak leadów. Czekamy na pierwsze zgłoszenia!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  &copy; 2026 Kodilla. Wszelkie prawa zastrzeżone.
+</footer>
+
+<script>
+// ===================== CONFIG =====================
+const ADMIN_LOGIN = 'admin';
+const ADMIN_PASS = 'kodilla2026';
+const WEBHOOK_URL = 'https://hook.eu1.make.com/wxscblywifm3kf27f2mdhb58499k54ry'; // <-- podmień po skonfigurowaniu Make.com
+
+// ===================== STATE =====================
+const answers = {};
+let utmParams = {};
+
+// ===================== UTM =====================
+function captureUTM() {
+  const params = new URLSearchParams(window.location.search);
+  utmParams = {
+    utm_source: params.get('utm_source') || '',
+    utm_medium: params.get('utm_medium') || '',
+    utm_campaign: params.get('utm_campaign') || '',
+    utm_content: params.get('utm_content') || '',
+    utm_term: params.get('utm_term') || '',
+  };
+}
+
+// ===================== ROUTING =====================
+function checkRoute() {
+  if (window.location.hash === '#admin' || window.location.pathname.endsWith('/admin')) {
+    showScreen('admin-screen');
+  }
+}
+
+function goHome() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  showScreen('welcome-screen');
+  window.location.hash = '';
+}
+
+// ===================== SCREENS =====================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function startQuiz() {
+  fbq('track', 'InitiateCheckout');
+  showScreen('q1-screen');
+}
+
+function goBack(q) {
+  const prev = { 2: 'q1-screen', 3: 'q2-screen', 4: 'q3-screen', 5: 'q4-screen', 6: 'q5-screen', 1: 'welcome-screen' };
+  showScreen(prev[q] || 'welcome-screen');
+}
+
+// ===================== ACCORDION =====================
+function toggleAcc(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+// ===================== OPTIONS =====================
+function selectOption(q, val, label, disqualify) {
+  const opts = document.querySelectorAll(`#opts-${q} .option`);
+  opts.forEach(o => o.classList.remove('selected'));
+  const clicked = document.querySelector(`#opts-${q} [data-val="${val}"]`);
+  if (clicked) clicked.classList.add('selected');
+
+  answers[q] = { val, label };
+
+  setTimeout(() => {
+    if (disqualify) {
+      answers['disqualify_reason'] = label;
+      document.getElementById('disqualify-generic-msg').textContent =
+        'Na podstawie Twoich odpowiedzi nie kwalifikujesz się do tego programu dofinansowania. ' + label + ' jest warunkiem dyskwalifikującym.';
+      showScreen('disqualify-generic-screen');
+    } else {
+      const nextMap = { q1: 'q2-screen', q2: 'q3-screen', q4: 'q5-screen', q5: 'q6-screen', q6: null };
+      if (q === 'q6') {
+        buildSummary();
+        showScreen('lead-screen');
+        fbq('track', 'Lead');
+      } else if (nextMap[q]) {
+        showScreen(nextMap[q]);
+      }
+    }
+  }, 200);
+}
+
+function disqualifyB2B(label) {
+  answers['q5'] = { val: label, label };
+  fbq('trackCustom', 'QuizDisqualifiedB2B', { status: label });
+  showScreen('disqualify-screen');
+}
+
+// ===================== Q3 SUBMIT =====================
+const POWIATY = {
+  'dolnoslaskie': ['boleslawski','dzierzoniowski','glogowski','gorowski','jaworski','jeleniogórski','kamiennogórski','klodzki','legnicki','lubanski','lubiński','lwówecki','milicki','olesnicki','oławski','polkowicki','strzelinki','sredzki','swidnicki','trebicki','walbrzyski','wolowski','wroclaw','wroclawski','zabkowicki','zgorzelecki','zlotoryjski'],
+  'kujawsko-pomorskie': ['aleksandrowski','brodnicki','bydgoski','chelminski','golubsko-dobrzynski','grudziadzki','inowroclawski','lipnowski','mogilnski','naklski','radziejowski','rypinski','sepolenski','swiecki','torunski','tuchowski','wabrzeski','wloclawski','zninski'],
+  'lubelskie': ['bialski','bilgorajski','chelmski','hrubieszowski','janowski','krasnostawski','krasnicki','lubartowski','lubelski','lecznyski','lkowski','opolski','puławski','radzynski','rykiski','swidnicki','tomaszowski','vladski','zamojski'],
+  'lubuskie': ['gorzowski','krosnienski','miedzyrzecki','nowosolski','slubicki','strzelecko-dranenski','sulecinski','swiebodzinski','wschowski','zielonogorski','zaganski','zarski'],
+  'lodzkie': ['belchatowski','brzezinski','kutnowski','laski','leczycki','lowicki','lodzki','wschodni','opoczynski','pabianicki','pajeczanski','piotrkowski','poddebicki','radomszczanski','rawski','sieradzki','skierniewicki','tomaszowski','wielunski','wieruszowski','zdunskowolski','zgierski'],
+  'malopolskie': ['bochenski','brzeski','chrzanowski','dabrowski','gorlicki','krakowski','krakow','limanowski','miechowski','myslenicki','nowosadecki','nowotarski','olkuski','oswiecimski','proszowicki','suski','szczucinski','tarnowski','tatrzanski','wadowicki','wielicki'],
+  'mazowieckie': ['bialobleski','ciechanowski','garwolinski','gostyninski','grodziski','grójecki','kozienicki','legionowski','lipski','losicki','makowski','minski','mławski','nowodworski','ostrolecki','ostrowski','otwocki','piaseczynski','plocki','plonski','pruszkowski','przasnyski','przysuski','pultuski','radomski','siedlecki','sierpecki','sochaczewski','sokolowski','szydlowiecki','warszawa','warszawski zachodni','wegrowki','wolominski','wyszkowski','zwolenski','zurominski','zyrardowski'],
+  'opolskie': ['brzeski','glubczycki','kedzierzynsko-kozielski','kluczborski','krapkowicki','namyslowski','nyski','oleski','opolski','prudnicki','strzelecki'],
+  'podkarpackie': ['bieszczadzki','brvialski','debicki','jarosławski','jasielski','kolbuszowski','krośnienski','leski','lezajski','lubaczowski','lancucki','mielecki','nizanski','przemyski','przeworski','ropczycko-sedziszowski','rzeszowski','sanocki','stalowowolski','strzyzowski','tarnobrzeski'],
+  'podlaskie': ['augustowski','bialostocki','bielski','grajewski','hajnowski','kolnenski','łomzynski','moniecki','sejnenski','siemiatycki','skladzki','sokolski','suwalski','wysoko-mazowiecki','zambrowski'],
+  'pomorskie': ['bytowski','chojnicki','czluchowski','gdanski','gdynia','kartuski','koscierski','kwidzynski','leborkski','malborski','nowodworski','pucki','slupski','sopot','starogardzki','sztumski','tczewski','trojmiejski','wejherowski'],
+  'slaskie': ['bedzynski','bielski','bierunsko-ledzinski','cieszynski','czestochowski','gliwicki','jaworzno','jeleniogorski','katowicki','klobucki','lubliniecki','mikolowski','myslowice','myszkowski','pszczynski','raciborski','rudzki','rybnik','rybnicki','siemianowice','sosnowiec','tarnogórski','tychy','wodzislawski','zabrze','zawiercianski','zywieckie'],
+  'swietokrzyskie': ['buski','jedrzejowski','kazimierski','kielecki','konecki','opatowski','ostrowiecki','pinczowski','sandomierski','sarnenski','skarzyski','starachowicki','staszowski','wloszczowski'],
+  'warminsko-mazurskie': ['bartoszycki','braniewski','działdowski','elblaski','elcki','gizycki','goldapski','ilawski','ketrzyn','lidzbarski','mragowski','nidzicki','nowomiejski','olecki','olsztynski','ostrodzki','piski','szczycienski','wegorzewski'],
+  'wielkopolskie': ['chodzieski','czarnkowsko-trzcianecki','gnieznienski','gostynski','grodziski','jarociński','kaliski','kepinski','kolski','koninski','krotoszynski','leszczynski','miedzychodski','nowotomyski','obornicki','ostrowski','ostrzeszowski','pilski','pleszewski','poznanski','rawicki','slupecki','szamotulski','sredzki','sremski','turecki','wagrowiecki','wolsztynski','wrzesinski','zlotowski'],
+  'zachodniopomorskie': ['bialogradzki','choszczenski','drawski','goleniowski','gryficki','gryfinski','kamienski','kolobrzeski','koszalinki','lobeski','mysliborski','policki','pyrzycki','slawienski','stargardzki','szczecinecki','swidwinski','walecki'],
+};
+
+function updatePowiaty() {
+  const woj = document.getElementById('woj-zamieszkania').value;
+  const sel = document.getElementById('powiat-zamieszkania');
+  sel.innerHTML = '<option value="">Wybierz powiat...</option>';
+  if (POWIATY[woj]) {
+    POWIATY[woj].forEach(p => {
+      const o = document.createElement('option');
+      o.value = p; o.textContent = p;
+      sel.appendChild(o);
+    });
+  }
+}
+
+function handleMeldunekChange(val) {
+  document.querySelectorAll('.radio-option').forEach(r => r.classList.remove('selected'));
+  const radios = document.querySelectorAll('input[name="meldunek"]');
+  radios.forEach(r => { if (r.value === val) { r.checked = true; r.closest('.radio-option').classList.add('selected'); } });
+  const extra = document.getElementById('meldunek-extra');
+  extra.classList.toggle('visible', val === 'diff');
+}
+
+function submitQ3() {
+  const woj = document.getElementById('woj-zamieszkania').value;
+  const pow = document.getElementById('powiat-zamieszkania').value;
+  const meldVal = document.querySelector('input[name="meldunek"]:checked');
+  const errEl = document.getElementById('err-meldunek');
+
+  if (!woj || !pow) { alert('Wybierz wojewodztwo i powiat zamieszkania.'); return; }
+  if (!meldVal) { errEl.classList.add('visible'); return; }
+  errEl.classList.remove('visible');
+
+  let wojZamel = meldVal.value === 'same' ? woj : (document.getElementById('woj-zameldowania').value || woj);
+
+  answers['q3'] = {
+    woj_zamieszkania: woj,
+    powiat: pow,
+    meldunek: meldVal.value,
+    woj_zameldowania: wojZamel
+  };
+
+  showScreen('q4-screen');
+}
+
+// ===================== SUMMARY =====================
+function buildSummary() {
+  const box = document.getElementById('summary-box');
+  const q3 = answers['q3'] || {};
+  const rows = [
+    ['Wiek', answers['q1']?.label || ''],
+    ['Logowanie elektroniczne', answers['q2']?.label || ''],
+    ['Wojewodztwo', q3.woj_zamieszkania || ''],
+    ['Powiat', q3.powiat || ''],
+    ['Region zameldowania', q3.meldunek === 'same' ? 'Taki sam jak zamieszkanie' : q3.woj_zameldowania],
+    ['Status', answers['q4']?.label || ''],
+    ['Działalność gospodarcza', answers['q5']?.label || ''],
+    ['Wkład własny (10-20%)', answers['q6']?.label || ''],
+  ];
+  box.innerHTML = rows.map(([l, v]) => `
+    <div class="summary-row">
+      <span class="label">${l}</span>
+      <span class="value">${v}</span>
+    </div>
+  `).join('');
+}
+
+// ===================== LEAD SUBMIT =====================
+function setFieldError(inputId, hasError) {
+  const el = document.getElementById(inputId);
+  if (hasError) {
+    el.classList.add('input--error');
+    el.addEventListener('input', function clearErr() {
+      el.classList.remove('input--error');
+      el.removeEventListener('input', clearErr);
+    });
+  } else {
+    el.classList.remove('input--error');
+  }
+}
+
+async function submitLead() {
+  const name = document.getElementById('lead-name').value.trim();
+  const phone = document.getElementById('lead-phone').value.trim();
+  const email = document.getElementById('lead-email').value.trim();
+  const errEl = document.getElementById('err-lead');
+
+  let hasError = false;
+
+  setFieldError('lead-name', !name);
+  setFieldError('lead-phone', !phone);
+
+  if (!name && !phone) {
+    errEl.textContent = 'Uzupełnij imię i numer telefonu.';
+    errEl.classList.add('visible');
+    document.getElementById('lead-name').focus();
+    return;
+  }
+  if (!name) {
+    errEl.textContent = 'Uzupełnij imię.';
+    errEl.classList.add('visible');
+    document.getElementById('lead-name').focus();
+    return;
+  }
+  if (!phone) {
+    errEl.textContent = 'Uzupełnij numer telefonu.';
+    errEl.classList.add('visible');
+    document.getElementById('lead-phone').focus();
+    return;
+  }
+
+  errEl.classList.remove('visible');
+
+  const btn = document.getElementById('lead-btn');
+  btn.disabled = true;
+  btn.textContent = 'Wysyłanie...';
+
+  const q3 = answers['q3'] || {};
+  const payload = {
+    timestamp: new Date().toISOString(),
+    imie: name,
+    telefon: phone,
+    email: email,
+    wiek: answers['q1']?.label || '',
+    logowanie_elektroniczne: answers['q2']?.label || '',
+    woj_zamieszkania: q3.woj_zamieszkania || '',
+    powiat: q3.powiat || '',
+    meldunek: q3.meldunek === 'same' ? 'Taki sam' : 'Inny',
+    woj_zameldowania: q3.woj_zameldowania || '',
+    status: answers['q4']?.label || '',
+    działalność: answers['q5']?.label || '',
+    wklad_własny: answers['q6']?.label || '',
+    ...utmParams
+  };
+
+  // Zapis lokalny
+  const stored = JSON.parse(localStorage.getItem('kodilla_leads') || '[]');
+  stored.unshift(payload);
+  localStorage.setItem('kodilla_leads', JSON.stringify(stored));
+
+  // Webhook Make.com
+  if (WEBHOOK_URL) {
+    try {
+      await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (e) { console.warn('Webhook error', e); }
+  }
+
+  // Meta Pixel
+  fbq('track', 'CompleteRegistration', {
+    status: answers['q4']?.label,
+    region: q3.woj_zamieszkania,
+  });
+  fbq('trackCustom', 'QuizCompleted', {
+    segment: answers['q4']?.label,
+    woj: q3.woj_zamieszkania,
+    wklad: answers['q6']?.val,
+    utm_source: utmParams.utm_source,
+    utm_campaign: utmParams.utm_campaign,
+  });
+
+  showScreen('thankyou-screen');
+}
+
+function downloadPDF() {
+  // Podmień na link do swojego PDF
+  alert('Tutaj podłączysz link do PDF z pigulka wiedzy o BUR.');
+}
+
+// ===================== ADMIN =====================
+function adminLogin() {
+  const login = document.getElementById('admin-login-input').value;
+  const pass = document.getElementById('admin-pass-input').value;
+  const errEl = document.getElementById('err-admin');
+
+  if (login === ADMIN_LOGIN && pass === ADMIN_PASS) {
+    document.getElementById('admin-login-box').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    renderAdminTable();
+  } else {
+    errEl.textContent = 'Nieprawidłowy login lub haslo.';
+    errEl.classList.add('visible');
+  }
+}
+
+function adminLogout() {
+  document.getElementById('admin-login-box').style.display = 'block';
+  document.getElementById('admin-panel').style.display = 'none';
+  document.getElementById('admin-login-input').value = '';
+  document.getElementById('admin-pass-input').value = '';
+}
+
+function renderAdminTable() {
+  const leads = JSON.parse(localStorage.getItem('kodilla_leads') || '[]');
+  const tbody = document.getElementById('admin-tbody');
+  const noLeads = document.getElementById('no-leads');
+  document.getElementById('admin-count').textContent = `Łączna liczba leadów: ${leads.length}`;
+
+  if (leads.length === 0) {
+    tbody.innerHTML = '';
+    noLeads.style.display = 'block';
+    return;
+  }
+  noLeads.style.display = 'none';
+
+  tbody.innerHTML = leads.map((l, i) => {
+    const date = new Date(l.timestamp).toLocaleString('pl-PL');
+    const wkladBadge = l.wklad_własny?.includes('budzet') ? 'badge-green' : l.wklad_własny?.includes('informacji') ? 'badge-yellow' : 'badge-gray';
+    return `
+      <tr>
+        <td>${date}</td>
+        <td><strong>${l.imie}</strong></td>
+        <td>${l.telefon}</td>
+        <td>${l.email || '-'}</td>
+        <td>${l.woj_zamieszkania}</td>
+        <td>${l.meldunek === 'Inny' ? l.woj_zameldowania : '-'}</td>
+        <td>${l.powiat}</td>
+        <td><span class="badge badge-green">${l.status}</span></td>
+        <td><span class="badge ${wkladBadge}">${l.wklad_własny}</span></td>
+        <td>${l.utm_source || '-'}</td>
+        <td>${l.utm_campaign || '-'}</td>
+        <td><button class="btn-danger" onclick="deleteLead(${i})">Usun</button></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function deleteLead(i) {
+  if (!confirm('Usunąć ten lead?')) return;
+  const leads = JSON.parse(localStorage.getItem('kodilla_leads') || '[]');
+  leads.splice(i, 1);
+  localStorage.setItem('kodilla_leads', JSON.stringify(leads));
+  renderAdminTable();
+}
+
+function exportCSV() {
+  const leads = JSON.parse(localStorage.getItem('kodilla_leads') || '[]');
+  if (!leads.length) { alert('Brak leadów do eksportu.'); return; }
+  const headers = ['Data','Imie','Telefon','Email','Woj. zamieszkania','Powiat','Meldunek','Woj. zameldowania','Status','Działalność','Wkład własny','UTM source','UTM medium','UTM campaign','UTM content','UTM term'];
+  const rows = leads.map(l => [
+    new Date(l.timestamp).toLocaleString('pl-PL'),
+    l.imie, l.telefon, l.email,
+    l.woj_zamieszkania, l.powiat, l.meldunek, l.woj_zameldowania,
+    l.status, l.działalność, l.wklad_własny,
+    l.utm_source, l.utm_medium, l.utm_campaign, l.utm_content, l.utm_term
+  ].map(v => `"${(v||'').replace(/"/g,'""')}"`).join(','));
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `kodilla_leady_${Date.now()}.csv`;
+  a.click();
+}
+
+// ===================== INIT =====================
+captureUTM();
+checkRoute();
+
+window.addEventListener('hashchange', () => {
+  if (window.location.hash === '#admin') showScreen('admin-screen');
+});
+</script>
+</body>
+</html>
