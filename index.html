@@ -1419,7 +1419,7 @@ async function submitLead() {
 
   const q3 = answers['q3'] || {};
   const payload = {
-    timestamp: new Date().toISOString(),
+    timestamp: new Date().toLocaleString('pl-PL', { timeZone: 'Europe/Warsaw' }),
     imie: name,
     telefon: phone,
     email: email,
