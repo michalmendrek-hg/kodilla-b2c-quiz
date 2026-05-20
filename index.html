@@ -1164,7 +1164,7 @@ tr:hover td { background: var(--bg); }
 // ===================== CONFIG =====================
 const ADMIN_LOGIN = 'admin';
 const ADMIN_PASS = 'kodilla2026';
-const WEBHOOK_URL = 'https://hook.eu1.make.com/zne1nm9j71an2lj0atyc573pwiv598kh'; // <-- podmień po skonfigurowaniu Make.com
+const WEBHOOK_URL = 'https://hook.eu1.make.com/wxscblywifm3kf27f2mdhb58499k54ry'; // <-- podmień po skonfigurowaniu Make.com
 
 // ===================== STATE =====================
 const answers = {};
@@ -1410,7 +1410,7 @@ async function submitLead() {
   localStorage.setItem('kodilla_leads', JSON.stringify(stored));
 
   // Webhook Make.com
-  if (WEBHOOK_URL && WEBHOOK_URL !== 'https://hook.eu1.make.com/zne1nm9j71an2lj0atyc573pwiv598kh') {
+  if (WEBHOOK_URL && WEBHOOK_URL !== 'https://hook.eu1.make.com/wxscblywifm3kf27f2mdhb58499k54ry') {
     try {
       await fetch(WEBHOOK_URL, {
         method: 'POST',
